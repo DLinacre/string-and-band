@@ -1,0 +1,15 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Tool caches (this project has no dependencies, but keep workspaces clean)
+node_modules/
+.cache/
+dist/
+build/
+coverage/
+__pycache__/

@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify app (syntax + smoke tests)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check required files exist
+        run: |
+          for f in index.html sw.js manifest.webmanifest favicon.svg; do
+            test -f "$f" || { echo "::error ::missing $f"; exit 1; }
+          done
+          echo "All app files present."
+
+      - name: Syntax-check the embedded application script
+        run: |
+          python3 - <<'PY'
+          import re, sys
+          src = open('index.html', encoding='utf-8').read()
+          m = re.search(r'<script>\n(.*)\n</script>', src, re.S)
+          if not m:
+              print('::error ::could not locate application <script> block')
+              sys.exit(1)
+          open('/tmp/app.js', 'w', encoding='utf-8').write(m.group(1))
+          print(f'Extracted {len(m.group(1))} chars of application JS')
+          PY
+          node --check /tmp/app.js
+          echo "javaScript syntax OK"
+
+      - name: Run smoke tests (data integrity, renderers, search, charts)
+        run: node test/smoke.js
+
+      - name: Validate web manifest JSON
+        run: python3 -c "import json; d=json.load(open('manifest.webmanifest')); assert d['name'] and d['icons']; print('manifest OK:', d['short_name'])"

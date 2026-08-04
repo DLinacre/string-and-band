@@ -1,0 +1,16 @@
+{
+  "name": "String & Band — Archery & Slingshot Knowledge Base",
+  "short_name": "String & Band",
+  "description": "Educational reference on the history, materials, terminology and craft of archery equipment and slingshots.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0e15",
+  "theme_color": "#0a0e15",
+  "lang": "en",
+  "categories": ["education", "reference", "sports"],
+  "icons": [
+    { "src": "./favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

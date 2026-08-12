@@ -1,7 +1,7 @@
 /* Minimal DOM stub + smoke test for the app script */
 const fs = require('fs');
 const src = fs.readFileSync(require('path').join(__dirname, '..', 'index.html'),'utf8');
-const m = src.match(/<script>\n([\s\S]*)\n<\/script>/);
+const m = src.match(/<script>\r?\n([\s\S]*)\r?\n<\/script>/);
 const appjs = m[1];
 
 const stripTags = s => String(s).replace(/<[^>]*>/g,' ').replace(/&(amp|lt|gt|quot|nbsp);/g,' ').replace(/&#39;/g,"'").replace(/\s+/g,' ').trim();
